@@ -1,4 +1,7 @@
-use std::io;
+#![allow(dead_code)]
+#![allow(unused_imports)]
+
+use std::{any::type_name, fmt::Display, io, result, str::FromStr};
 
 const WORDS: [&str; 4] = ["Apple", "Orange", "Juice", "Sex"];
 
@@ -10,9 +13,7 @@ fn count_from_to(x: i32, y: i32) {
     }
 }
 
-
-
-fn main() {
+fn echo_function() {
     println!("Echo expr");
     let mut user_input = String::new();
     io::stdin().read_line(&mut user_input).expect("Nothing");
@@ -41,4 +42,53 @@ fn main() {
         },
         _ => println!("Bro what are yo saing?")
     }
+}
+
+
+fn is_negative() {
+    println!("Say your name: ");
+    let mut user_input = String::new();
+    io::stdin().read_line(&mut user_input).expect("Nothing");
+    let num: i32 = user_input.trim().parse().expect("msg");
+    let is_negative_num: bool;
+    if num < 0 { 
+        is_negative_num = true;
+    } else { 
+        is_negative_num = false;
+    };
+    match is_negative_num {
+        true => println!("Num {} is not a negative.", num),
+        false => println!("Num {} is negative.", num),
+    }
+}
+
+
+
+fn get_input<T: FromStr>() -> Option<T> {
+    let mut user_input = String::new();
+    io::stdin().read_line(&mut user_input).expect("Nothing");
+    let value: Option<T> = match user_input.trim().parse() {
+        Ok(value) => Some(value),
+        Err(_) => { return None },
+    };
+    return value; 
+}
+
+
+fn print_type_of<T: Display>(val: &T) {
+    println!("Value is {} and type of this {}", val, type_name::<T>())
+}
+
+
+fn last_char() {
+    let oinput: Option<String> = get_input();
+    let input: String = match oinput {Some(var) => var, None => String::new()};
+    println!("Last char of string <{}> is <{}>", input, input[input.len()])
+}
+
+
+fn main() {
+    // echo_function()
+    // is_negative();
+    last_char();
 }
